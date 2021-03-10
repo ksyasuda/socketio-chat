@@ -1,6 +1,6 @@
 import express from 'express';
 import http from 'http';
-const socketIo = require('socket.io');
+import * as socketIo from 'socket.io';
 
 import index from './routes/index';
 
@@ -11,11 +11,12 @@ app.use(index);
 
 const server = http.createServer(app);
 
-const io = socketIo(server);
+//const io = socketIo(server);
+const io = new socketIo.Server(server);
 
 let interval: any;
 
-io.on('connection', (socket: SocketIO.Socket) => {
+io.on('connection', (socket: socketIo.Socket) => {
 	console.log('New client connected');
 	if (interval) {
 		clearInterval(interval);
@@ -27,7 +28,7 @@ io.on('connection', (socket: SocketIO.Socket) => {
 	});
 });
 
-const getApiAndEmit = (socket: SocketIO.Socket) => {
+const getApiAndEmit = (socket: socketIo.Socket) => {
 	const res = new Date();
 	socket.emit('FromAPI', res);
 };
