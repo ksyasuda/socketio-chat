@@ -8,7 +8,9 @@ const io = require("socket.io")(server);
 const PORT = process.env.PORT || 8000;
 
 app.get("/", (req: express.Request, res: express.Response) => {
-	res.sendFile(__dirname + "/index.html");
+	const directory = __dirname;
+	const view = directory.substring(0, directory.lastIndexOf("/")) + "/views";
+	res.sendFile(view + "/index.html");
 });
 
 io.on("connection", (socket: Socket) => {
